@@ -3,77 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خبر آنلاین</title>
+    <title>خبر آنلاین | آخرین اخبار لحظه‌ای ایران و جهان</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #e11d48;     /* قرمز رزگلد خبری */
+            --primary-dark: #be123c;
+            --text: #1f2937;
+            --bg: #f8fafc;
+            --card-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            margin: 0;
-            font-family: sans-serif;
-            background: #f5f5f5;
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
         }
 
+        /* هدر لوکس */
         header {
-            background: #d40000;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .news-container {
-            padding: 20px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .news-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0px 0px 8px #ccc;
-        }
-
-        .news-box h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #d40000;
-        }
-
-        .news-box p {
-            margin-top: 10px;
-            line-height: 1.7;
-        }
-
-        footer {
-            background: #111;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
+            padding: 1.5rem 0;
             text-align: center;
-            padding: 15px;
-            margin-top: 40px;
+            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><pattern id=%22grain%22 width=%22100%22 height=%22100%22 patternUnits=%22userSpaceOnUse%22><circle cx=%2250%22 cy=%2250%22 r=%221%22 fill=%22%23ffffff%22 opacity=%220.05%22/></pattern></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23grain)%22/></svg>');
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo span {
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        /* کانتینر اصلی */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* کارت خبر با افکت شناور */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .news-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .news-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .news-card:hover .news-image img {
+            transform: scale(1.08);
+        }
+
+        /* placeholder برای عکس (اگر عکس نذاشتی قشنگ باشه) */
+        .news-image::before {
+            content: "خبر آنلاین";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fecaca, #fba9a9);
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .news-meta {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .news-meta i {
+            color: var(--primary);
+        }
+
+        /* فوتر شیک */
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.2rem; }
+            .news-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<header>خبر آنلاین</header>
+<header>
+    <div class="logo"><span>خبر آنلاین</span></div>
+    <div class="tagline">سریع‌ترین و معتبرترین منبع خبری ایران</div>
+</header>
 
-<div class="news-container">
+<div class="container">
+    <div class="news-grid">
 
-    <div class="news-box">
-        <h2>اولین خبر تستی</h2>
-        <p>اینجا متن خبر میاد. هر خبری که خواستی می‌تونی اضافه کنی.</p>
+        <!-- خبر ۱ -->
+        <div class="news-card">
+            <div class="news-image">
+                <!-- اگر عکس داشتی اینو بذار: <img src="url-عکس.jpg" alt="عنوان خبر"> -->
+            </div>
+            <div class="news-content">
+                <span class="news-category">سیاسی</span>
+                <h2 class="news-title">جلسه فوق‌العاده مجلس برای بررسی لایحه بودجه ۱۴۰۵</h2>
+                <p class="news-excerpt">نمایندگان مجلس شورای اسلامی امروز در جلسه‌ای فوق‌العاده به بررسی اصلاحات پیشنهادی در لایحه بودجه سال آینده پرداختند...</p>
+                <div class="news-meta">
+                    <span><i class="far fa-clock"></i> ۲۵ دقیقه پیش</span>
+                    <span><i class="far fa-eye"></i> ۱۲,۴۵۶ بازدید</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- خبر ۲ -->
+        <div class="news-card">
+            <div class="news-image"></div>
+            <div class="news-content">
+                <span class="news-category">ورزشی</span>
+                <h2 class="news-title">پیروزی دراماتیک پرسپولیس مقابل النصر در لیگ نخبگان</h2>
+                <p class="news-excerpt">شاگردان اسماعیل کارتال با گل دقایق پایانی موفق شدند النصر عربستانی را شکست دهند و صدرنشین گروه شوند.</p>
+                <div class="news-meta">
+                    <span><i class="far fa-clock"></i> ۲ ساعت پیش</span>
+                    <span><i class="far fa-eye"></i> ۴۸,۹۱۲ بازدید</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- خبر ۳ -->
+        <div class="news-card">
+            <div class="news-image"></div>
+            <div class="news-content">
+                <span class="news-category">اقتصادی</span>
+                <h2 class="news-title">دلار آزاد به زیر ۶۰ هزار تومان رسید</h2>
+                <p class="news-excerpt">پس از اعلام سیاست‌های جدید بانک مرکزی، نرخ دلار در بازار آزاد با کاهش چشمگیری مواجه شد و به کانال ۵۹ هزار تومان بازگشت.</p>
+                <div class="news-meta">
+                    <span><i class="far fa-clock"></i> ۴ ساعت پیش</span>
+                    <span><i class="far fa-eye"></i> ۹۸,۳۲۰ بازدید</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- می‌تونی همین الگو رو کپی کنی و خبرهای بیشتری اضافه کنی -->
+
     </div>
-
-    <div class="news-box">
-        <h2>خبر شماره دو</h2>
-        <p>اینجا هم یک متن تستی برای خبر دوم قرار می‌گیره.</p>
-    </div>
-
 </div>
 
-<footer>© 2025 KhabarOnline — All Rights Reserved</footer>
+<footer>
+    <div class="footer-logo">خبر آنلاین</div>
+    <p>© ۱۴۰۴ - ۲۰۲۵ تمامی حقوق محفوظ است.</p>
+</footer>
 
 </body>
 </html>
-
